@@ -21,7 +21,8 @@ default_args = {
     'start_date': datetime(2022, 12, 4, 0, 0, 0, 0),
     'retries': 3,
     'retry_delay': timedelta(minutes=5),
-    'catchup': False
+    'catchup': False,
+    'email_on_failure': False
 }
 
 dag = DAG('sparkify',
@@ -49,7 +50,7 @@ stage_events_to_redshift = StageToRedshiftOperator(
     table='public.staging_events',
     aws_credentials_id="aws_credentials",
     s3_bucket="udacity-dend",
-    s3_key="log-data/",
+    s3_key="log_data/",
     json_path='s3://udacity-dend/log_json_path.json'
 )
 
@@ -60,7 +61,7 @@ stage_songs_to_redshift = StageToRedshiftOperator(
     table='public.staging_songs',
     aws_credentials_id="aws_credentials",
     s3_bucket="udacity-dend",
-    s3_key="song-data/A/A/A/"
+    s3_key="song_data/A/A/A/"
 )
 
 load_songplays_table = LoadFactOperator(
